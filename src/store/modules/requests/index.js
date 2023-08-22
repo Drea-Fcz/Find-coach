@@ -4,7 +4,11 @@ import getters from '@/store/modules/requests/getters';
 
 export default {
   namespace: true,
-  state() {},
+  state() {
+    return {
+      requests: []
+    };
+  },
   mutations,
   actions,
   getters

@@ -95,7 +95,6 @@ export default {
         this.areas.isValid = false
         this.formIsValid = false;
       }
-
     },
     submitForm(){
       this.validateForm();
