@@ -11,6 +11,7 @@
        >Refresh
        </base-button>
        <base-button
+         v-if='!isCoach'
          link
          :to='"/register"'
        >Register as Coach</base-button>
@@ -62,6 +63,9 @@ export default {
         }
         return false;
       })
+    },
+    isCoach() {
+      return this.$store.getters['isCoach'];
     },
     ...mapGetters(['filteredCoaches', 'hasCoaches'])
   },
