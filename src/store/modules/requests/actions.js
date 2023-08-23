@@ -1,6 +1,5 @@
 export default {
   contactCoach(context, payload) {
-    console.log(payload);
     const newRequest = {
       id: new Date().toISOString(),
       coachId: payload.coachId,
