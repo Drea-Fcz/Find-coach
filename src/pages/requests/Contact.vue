@@ -18,7 +18,6 @@
 </template>
 <script>
 export default {
-  emits: ['save-data'],
   data() {
     return {
       email: {
@@ -39,7 +38,7 @@ export default {
     },
     validateForm() {
       this.formIsValid = true;
-      if (this.email.val === '' || !this.email.includes('@')) {
+      if (this.email.val === '') {
         this.email.isValid = false
         this.formIsValid = false;
       }
@@ -54,10 +53,12 @@ export default {
         return;
       }
       const formData = {
+        coachId: this.$route.params.id,
         email: this.email.val,
         message: this.message.val
       }
-      this.$emit('save-data', formData);
+      this.$store.dispatch('contactCoach', formData);
+      this.$router.replace('/coaches');
     }
   }
 
