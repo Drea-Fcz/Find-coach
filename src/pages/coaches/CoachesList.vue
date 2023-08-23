@@ -6,6 +6,7 @@
    <base-card>
      <div class='controls'>
        <base-button
+         @click='loadCoaches'
          :mode='"outline"'
          :link='false'
        >Refresh
@@ -69,9 +70,15 @@ export default {
     },
     ...mapGetters(['filteredCoaches', 'hasCoaches'])
   },
+  created() {
+    this.loadCoaches();
+  },
   methods: {
     setFilter(updatedFilter) {
       this.activeFilters = updatedFilter;
+    },
+    loadCoaches() {
+      this.$store.dispatch('loadCoaches');
     }
   }
 };
