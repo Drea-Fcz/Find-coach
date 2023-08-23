@@ -16,8 +16,7 @@ export default {
     // const responseData = await response.json();
 
     if (!response.ok) {
-      console.log(response);
-      // ...error ...
+      throw new Error(response.message || 'Failed to post !');
     }
 
     context.commit('registerCoach', {

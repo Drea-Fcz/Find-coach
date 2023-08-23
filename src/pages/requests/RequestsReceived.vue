@@ -1,36 +1,69 @@
 <template>
-  <section>
-    <base-card>
-      <header>
-        <h2>Request Received</h2>
-        <ul v-if='hasRequest'>
+  <div>
+    <base-dialog :show="!!error" title="An error occurred!" @close="handleError">
+      <p>{{ error }}</p>
+    </base-dialog>
+    <section>
+      <base-card>
+        <header>
+          <h2>Requests Received</h2>
+        </header>
+        <base-spinner v-if="isLoading"></base-spinner>
+        <ul v-else-if="hasRequests && !isLoading">
           <request-item
-            v-for='request in receivedRequests'
-            :key='request.id'
-            :email='request.userEmail'
-            :message='request.message'
+            v-for="req in receivedRequests"
+            :key="req.id"
+            :email="req.userEmail"
+            :message="req.message"
           ></request-item>
         </ul>
-        <h3 v-else>You haven't received any requests yet !</h3>
-      </header>
-    </base-card>
-  </section>
+        <h3 v-else>You haven't received any requests yet!</h3>
+      </base-card>
+    </section>
+  </div>
 </template>
+
 <script>
-import RequestItem from '@/components/requests/RequestItem.vue';
+import RequestItem from '../../components/requests/RequestItem.vue';
 
 export default {
-  components: { RequestItem },
+  components: {
+    RequestItem,
+  },
+  data() {
+    return {
+      isLoading: false,
+      error: null,
+    };
+  },
   computed: {
-    receivedRequests(){
+    receivedRequests() {
       return this.$store.getters['receivedRequests'];
     },
-    hasRequest() {
+    hasRequests() {
       return this.$store.getters['hasRequest'];
-    }
-  }
+    },
+  },
+  created() {
+    this.loadRequests();
+  },
+  methods: {
+    async loadRequests() {
+      this.isLoading = true;
+      try {
+        await this.$store.dispatch('loadRequest');
+      } catch (error) {
+        this.error = error.message || 'Something failed!';
+      }
+      this.isLoading = false;
+    },
+    handleError() {
+      this.error = null;
+    },
+  },
 };
 </script>
+
 <style scoped>
 header {
   text-align: center;
@@ -46,5 +79,4 @@ ul {
 h3 {
   text-align: center;
 }
-
 </style>
